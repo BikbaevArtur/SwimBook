@@ -34,7 +34,6 @@ public class ClientMapper {
                 .build();
     }
 
-
     public void updateClient(Client client, ClientDto clientDto) {
         if (clientDto.getName() != null) {
             client.setName(clientDto.getName());

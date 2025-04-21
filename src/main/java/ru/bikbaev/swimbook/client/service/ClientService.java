@@ -93,6 +93,11 @@ public class ClientService {
     }
 
 
+    public Client findByName(String name) {
+        return  clientRepository.findByName(name).orElseThrow(
+                ()-> new ClientNotFoundException("Клиент с именем: "+name+" не найден")
+        );
+    }
 
 
     private void checkIfEmailExists(String email, String currentEmail) {

@@ -206,6 +206,53 @@ public class ClientServiceTest {
         verify(jpa, never()).save(any());
     }
 
+    @Test
+    void getClientEntityByIdTest(){
+        Long id = 1L;
+        Client client = createTestClient();
+
+        when(jpa.findById(id)).thenReturn(Optional.of(client));
+
+        Client result = service.getClientEntityById(id);
+
+        assertNotNull(result);
+
+        verify(jpa,times(1)).findById(id);
+    }
+
+    @Test
+    void getClientEntityByIdThrowClientNotFoundException(){
+        Long id = 1L;
+        when(jpa.findById(id)).thenReturn(Optional.empty());
+        assertThrows(ClientNotFoundException.class,()->service.getClientEntityById(id));
+        verify(jpa,times(1)).findById(id);
+    }
+
+    @Test
+    void findByNameTest(){
+        String name = "Ivan";
+        Client client = createTestClient();
+        when(jpa.findByName(name)).thenReturn(Optional.of(client));
+
+        Client result = service.findByName(name);
+
+        assertNotNull(result);
+        assertEquals(result,client);
+
+        verify(jpa,times(1)).findByName(name);
+    }
+
+    @Test
+    void findByNameTestThrowClientNotFoundException(){
+        String name = "Ivan";
+
+        when(jpa.findByName(name)).thenReturn(Optional.empty());
+
+        assertThrows(ClientNotFoundException.class,()->service.findByName(name));
+
+        verify(jpa,times(1)).findByName(name);
+    }
+
     private Client createTestClient() {
         return Client
                 .builder()

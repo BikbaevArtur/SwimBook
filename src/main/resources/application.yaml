@@ -11,5 +11,3 @@ spring:
       ddl-auto: none
     show-sql: false
 
-timetable:
-  max-record-count : 10

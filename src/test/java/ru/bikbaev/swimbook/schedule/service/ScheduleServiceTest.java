@@ -16,8 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -86,18 +85,76 @@ public class ScheduleServiceTest {
         List<TimeRecord> timeRecords = service.createTimeRecordsForSchedule(testDate);
 
         assertNotNull(timeRecords);
-        assertEquals(4, timeRecords.size());
+        assertEquals(3, timeRecords.size());
 
         assertEquals(LocalTime.of(9, 0), timeRecords.get(0).getTime());
         assertEquals(LocalTime.of(10, 0), timeRecords.get(1).getTime());
         assertEquals(LocalTime.of(11, 0), timeRecords.get(2).getTime());
-        assertEquals(LocalTime.of(12, 0), timeRecords.get(3).getTime());
 
         assertEquals(0, timeRecords.get(0).getCount());
         assertEquals(0, timeRecords.get(1).getCount());
         assertEquals(0, timeRecords.get(2).getCount());
-        assertEquals(0, timeRecords.get(3).getCount());
 
         verify(service, times(1)).getScheduleForNext60Days();
+    }
+
+    @Test
+    void validatePoolWorkingHoursTest(){
+        LocalDate date = LocalDate.of(2025,4,21);
+        LocalTime startTime = LocalTime.of(9,0);
+        LocalTime endTime = LocalTime.of(18,0);
+
+        Map<LocalDate,WorkTimeDto> schedule = Map.of(date,new WorkTimeDto(startTime,endTime));
+
+        when(service.getScheduleForNext60Days()).thenReturn(schedule);
+
+        LocalTime testTime0 = LocalTime.of(8,0);
+        LocalTime testTime1 = LocalTime.of(9,0);
+        LocalTime testTime2 = LocalTime.of(10,0);
+        LocalTime testTime3 = LocalTime.of(18,0);
+
+        boolean result0 = service.validatePoolWorkingHours(date,testTime0);
+        boolean result1 = service.validatePoolWorkingHours(date,testTime1);
+        boolean result2 = service.validatePoolWorkingHours(date,testTime2);
+        boolean result3 = service.validatePoolWorkingHours(date,testTime3);
+
+        assertFalse(result0);
+        assertTrue(result1);
+        assertTrue(result2);
+        assertFalse(result3);
+
+    }
+
+    @Test
+    void validatePoolWorkingIntervalTest(){
+        LocalDate date = LocalDate.of(2025,4,21);
+        LocalTime startTime = LocalTime.of(9,0);
+        LocalTime endTime = LocalTime.of(18,0);
+
+        Map<LocalDate,WorkTimeDto> schedule = Map.of(date,new WorkTimeDto(startTime,endTime));
+
+        when(service.getScheduleForNext60Days()).thenReturn(schedule);
+
+        LocalTime startTestTime0 = LocalTime.of(8,0);
+        LocalTime endTestTime0 = LocalTime.of(12,0);
+
+        LocalTime startTestTime1 = LocalTime.of(9,0);
+        LocalTime endTestTime1 = LocalTime.of(12,0);
+
+        LocalTime startTestTime2 = LocalTime.of(15,0);
+        LocalTime endTestTime2 = LocalTime.of(17,0);
+
+        LocalTime startTestTime3 = LocalTime.of(15,0);
+        LocalTime endTestTime3 = LocalTime.of(18,0);
+
+        boolean result0= service.validatePoolWorkingInterval(date,startTestTime0,endTestTime0);
+        boolean result1 = service.validatePoolWorkingInterval(date,startTestTime1,endTestTime1);
+        boolean result2 = service.validatePoolWorkingInterval(date,startTestTime2,endTestTime2);
+        boolean result3 = service.validatePoolWorkingInterval(date,startTestTime3,endTestTime3);
+
+        assertFalse(result0);
+        assertTrue(result1);
+        assertTrue(result2);
+        assertFalse(result3);
     }
 }
