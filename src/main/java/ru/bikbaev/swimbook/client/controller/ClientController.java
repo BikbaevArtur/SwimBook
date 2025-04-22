@@ -1,5 +1,7 @@
 package ru.bikbaev.swimbook.client.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+@Tag(name = "API для работы с клиентами")
 @RestController
 @RequestMapping("/api/v0/pool/client")
 public class ClientController {
@@ -28,24 +32,28 @@ public class ClientController {
         this.clientService = clientService;
     }
 
+    @Operation(summary = "Получение списка клиентов бассейна")
     @GetMapping("/all")
     public ResponseEntity<List<ClientDto>> getClients() {
         List<ClientDto> clients = clientService.getAllClient();
         return ResponseEntity.ok(clients);
     }
 
+    @Operation(summary = "Получение данных о клиенте ")
     @GetMapping("/get")
     public ResponseEntity<ClientDto> getClient(@RequestParam Long id) {
         ClientDto client = clientService.getClientById(id);
         return ResponseEntity.ok(client);
     }
 
+    @Operation(summary = "Добавление нового клиента")
     @PostMapping("/add")
     public ResponseEntity<Void> addClient(@RequestBody @Valid ClientRequest clientRequest) {
         clientService.createNewClient(clientRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Обновление данных о клиенте")
     @PostMapping("/update")
     public ResponseEntity<Void> updateClient(@RequestBody @Valid ClientDto clientDto) {
         clientService.updateClient(clientDto);
@@ -93,10 +101,10 @@ public class ClientController {
                 .getBindingResult()
                 .getAllErrors()
                 .forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
+                    String fieldName = ((FieldError) error).getField();
+                    String errorMessage = error.getDefaultMessage();
+                    errors.put(fieldName, errorMessage);
+                });
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
