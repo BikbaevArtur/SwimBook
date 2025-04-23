@@ -10,7 +10,7 @@
 | Требования                                                             | Выполнение |      Классы реализации бизнес логики       | Тестирование                                       |
 |:-----------------------------------------------------------------------|:----------:|:------------------------------------------:|----------------------------------------------------|
 | Возможность записаться только на рабочее время                         |     ✅      | [TimeTableService] <br/> [ScheduleService] | [TimeTableServiceTest] <br/> [ScheduleServiceTest] |
-| Ограничение на количество записей в час (допустим не более 10 человек) |     ✅      | [TimeTableService] <br/> [ScheduleService] | [TimeTableServiceTest] <br/> [ScheduleServiceTest] |
+| Ограничение на количество записей в час (допустим не более 10 человек) |     ✅      |             [TimeTableService]             | [TimeTableServiceTest]                             |
 | Описание структуры таблиц в БД                                         |     ✅      |              [01_schema.sql]               |                                                    |
 
 # Необязательные пожелания:
@@ -243,18 +243,25 @@
 ]
 
 ```
+
 [TimeTableController]: src/main/java/ru/bikbaev/swimbook/timeTable/controller/TimeTableController.java
+
 [TimeTableService]: src/main/java/ru/bikbaev/swimbook/timeTable/service/TimeTableService.java
+
 [TimeTableServiceTest]: src/test/java/ru/bikbaev/swimbook/timeTable/service/TimeTableServiceTest.java
 
 [ScheduleService]: src/main/java/ru/bikbaev/swimbook/schedule/service/ScheduleService.java
+
 [ScheduleServiceTest]: src/test/java/ru/bikbaev/swimbook/schedule/service/ScheduleServiceTest.java
 
 [HolidayScheduleService]: src/main/java/ru/bikbaev/swimbook/schedule/service/HolidayScheduleService.java
+
 [HolidayScheduleServiceTest]: src/test/java/ru/bikbaev/swimbook/schedule/service/HolidayScheduleServiceTest.java
 
 [ClientController]: src/main/java/ru/bikbaev/swimbook/client/controller/ClientController.java
+
 [ClientService]: src/main/java/ru/bikbaev/swimbook/client/service/ClientService.java
+
 [ClientServiceTest]: src/test/java/ru/bikbaev/swimbook/client/service/ClientServiceTest.java
 
 [01_schema.sql]: db/01_schema.sql
