@@ -31,6 +31,7 @@ public class ClientDto {
             regexp = "^\\+?[0-9]{10,15}$",
             message = "Телефон должен содержать только цифры, начинаться с +, min = 10  max = 15)"
     )
+    @Size(min = 10,max = 15,message = "Длина телефона должна быть от 10 до 15 символов")
     private String phone;
 
     @Schema(description = "email", example = "ivan@mail.ru")

@@ -110,13 +110,13 @@ public class ClientService {
 
     private void checkIfEmailExists(String email, String currentEmail) {
         if (!currentEmail.equals(email) && clientRepository.existsByEmail(email)) {
-            throw new EmailAlreadyExistException("Пользователь с " + email + " уже существует");
+            throw new EmailAlreadyExistException("Пользователь с email " + email + " уже существует");
         }
     }
 
     private void checkIfPhoneExists(String phone, String currentPhone) {
         if (!currentPhone.equals(phone) && clientRepository.existsByPhone(phone)) {
-            throw new PhoneAlreadyExistException("Пользователь с " + phone + " уже существует");
+            throw new PhoneAlreadyExistException("Пользователь с телефоном " + phone + " уже существует");
         }
     }
 }

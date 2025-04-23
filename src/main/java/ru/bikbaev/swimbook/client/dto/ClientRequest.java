@@ -1,10 +1,7 @@
 package ru.bikbaev.swimbook.client.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Schema(description = "Request для создание нового клиента")
@@ -19,6 +16,7 @@ public class ClientRequest {
 
     @Schema(description = "Номер телефона(код страны обязателен, например +7)",example = "+77777777777")
     @NotBlank(message = "Телефон не должен быть пустым")
+    @Size(min = 10,max = 15,message = "Длина телефона должна быть от 10 до 15 символов")
     @Pattern(
             regexp = "^\\+?[0-9]{10,15}$",
             message = "Телефон должен содержать только цифры, начинаться с +, min = 10  max = 15)"
