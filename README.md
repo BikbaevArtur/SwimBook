@@ -7,27 +7,27 @@
 
 # Обязательные требования к реализации:
 
-| Требования                                                             | Выполнение |        Классы реализации бизнес логики         | Тестирование                                           |
-|:-----------------------------------------------------------------------|:----------:|:----------------------------------------------:|--------------------------------------------------------|
-| Возможность записаться только на рабочее время                         |     ✅      | [TimeTableService]() <br/> [ScheduleService]() | [TimeTableServiceTest]() <br/> [ScheduleServiceTest]() |
-| Ограничение на количество записей в час (допустим не более 10 человек) |     ✅      | [TimeTableService]() <br/> [ScheduleService]() | [TimeTableServiceTest]() <br/> [ScheduleServiceTest]() |
-| Описание структуры таблиц в БД                                         |     ✅      |               [01_schema.sql]()                |                                                        |
+| Требования                                                             | Выполнение |      Классы реализации бизнес логики       | Тестирование                                       |
+|:-----------------------------------------------------------------------|:----------:|:------------------------------------------:|----------------------------------------------------|
+| Возможность записаться только на рабочее время                         |     ✅      | [TimeTableService] <br/> [ScheduleService] | [TimeTableServiceTest] <br/> [ScheduleServiceTest] |
+| Ограничение на количество записей в час (допустим не более 10 человек) |     ✅      | [TimeTableService] <br/> [ScheduleService] | [TimeTableServiceTest] <br/> [ScheduleServiceTest] |
+| Описание структуры таблиц в БД                                         |     ✅      |              [01_schema.sql]               |                                                    |
 
 # Необязательные пожелания:
 
-| Требования                                                                                     | Выполнение |              Классы реализации логики               | Классы тестирования                                         |
-|------------------------------------------------------------------------------------------------|:----------:|:---------------------------------------------------:|-------------------------------------------------------------|
-| Поиск записей (по ФИО, дате посещения)                                                         |     ✅      |                [TimeTableService]()                 | [TimeTableServiceTest]()                                    |
-| Отдельные графики для праздничных дней                                                         |     ✅      | [HolidayScheduleService]() <br/>[ScheduleService]() | [HolidayScheduleServiceTest]() <br/>[ScheduleServiceTest]() |
-| Ограничение на количество записей в день на человека (допустим не более 1-го посещения в день) |     ❌      |                                                     |                                                             |
-| Возможность записи на несколько часов подряд                                                   |     ✅      |                [TimeTableService]()                 | [TimeTableServiceTest]()                                    |
+| Требования                                                                                     | Выполнение |            Классы реализации логики             | Классы тестирования                                     |
+|------------------------------------------------------------------------------------------------|:----------:|:-----------------------------------------------:|---------------------------------------------------------|
+| Поиск записей (по ФИО, дате посещения)                                                         |     ✅      |               [TimeTableService]                | [TimeTableServiceTest]                                  |
+| Отдельные графики для праздничных дней                                                         |     ✅      | [HolidayScheduleService] <br/>[ScheduleService] | [HolidayScheduleServiceTest] <br/>[ScheduleServiceTest] |
+| Ограничение на количество записей в день на человека (допустим не более 1-го посещения в день) |     ❌      |                                                 |                                                         |
+| Возможность записи на несколько часов подряд                                                   |     ✅      |               [TimeTableService]                | [TimeTableServiceTest]                                  |
 
 # Требования к API
 
-| Требования                 | Выполнение |       Controller        | Service              | Test                     |
-|----------------------------|:----------:|:-----------------------:|----------------------|--------------------------|
-| API для работы с клиентами |     ✅      |  [ClientController]()   | [ClientService]()    | [ClientServiceTest]()    |
-| API для работы с записями  |     ✅      | [TimeTableController]() | [TimeTableService]() | [TimeTableServiceTest]() |
+| Требования                 | Выполнение |      Controller       | Service            | Test                   |
+|----------------------------|:----------:|:---------------------:|--------------------|------------------------|
+| API для работы с клиентами |     ✅      |  [ClientController]   | [ClientService]    | [ClientServiceTest]    |
+| API для работы с записями  |     ✅      | [TimeTableController] | [TimeTableService] | [TimeTableServiceTest] |
 
 ---
 
@@ -243,3 +243,16 @@
 ]
 
 ```
+[TimeTableController]: src/main/java/ru/bikbaev/swimbook/timeTable/controller/TimeTableController.java
+[TimeTableService]: src/main/java/ru/bikbaev/swimbook/timeTable/service/TimeTableService.java
+[TimeTableServiceTest]: src/test/java/ru/bikbaev/swimbook/timeTable/service/TimeTableServiceTest.java
+
+[ScheduleService]: src/main/java/ru/bikbaev/swimbook/schedule/service/ScheduleService.java
+[ScheduleServiceTest]: src/test/java/ru/bikbaev/swimbook/schedule/service/ScheduleServiceTest.java
+
+[HolidayScheduleService]: src/main/java/ru/bikbaev/swimbook/schedule/service/HolidayScheduleService.java
+[HolidayScheduleServiceTest]: src/test/java/ru/bikbaev/swimbook/schedule/service/HolidayScheduleServiceTest.java
+
+[ClientController]: src/main/java/ru/bikbaev/swimbook/client/controller/ClientController.java
+[ClientService]: src/main/java/ru/bikbaev/swimbook/client/service/ClientService.java
+[ClientServiceTest]: src/test/java/ru/bikbaev/swimbook/client/service/ClientServiceTest.java
