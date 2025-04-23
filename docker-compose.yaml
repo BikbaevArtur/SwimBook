@@ -14,3 +14,16 @@ services:
       - "5432:5432"
     volumes:
       - ./db:/docker-entrypoint-initdb.d
+
+  app:
+    restart: always
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/swim_book_bd
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+      JAVA_OPTS: -Xmx512m
