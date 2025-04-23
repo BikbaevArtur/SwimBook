@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.bikbaev.swimbook.client.exception.ClientNotFoundException;
 import ru.bikbaev.swimbook.common.exception.ErrorMessage;
@@ -14,7 +16,9 @@ import ru.bikbaev.swimbook.timeTable.service.TimeTableService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Tag(name = "API для работы с записями")
@@ -44,24 +48,24 @@ public class TimeTableController {
     @Operation(summary = "Добавить запись клиента на определенное время")
     @PostMapping("/reserve")
     public ResponseEntity<OrderIdResponse> reserve(@RequestBody @Valid ReserveRequest reserveRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(timeTableService.createNewReserve(reserveRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(timeTableService.createNewReserve(reserveRequest));
     }
 
     @Operation(summary = "Добавить запись клиента на несколько часов подряд")
     @PostMapping("/reserve-multiple")
     public ResponseEntity<List<OrderIdResponse>> reserveMultipleHours(@RequestBody @Valid MultiHourReservationRequest request) {
-        return ResponseEntity.status(HttpStatus.OK).body(timeTableService.reserveMultipleHours(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(timeTableService.reserveMultipleHours(request));
     }
 
     @Operation(summary = "Отмена записи клиента на определенное время")
-    @GetMapping("/cancel")
+    @PostMapping("/cancel")
     public ResponseEntity<Void> cancel(@RequestBody @Valid CancelRequest cancelRequest) {
         timeTableService.cancelReserve(cancelRequest);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Operation(summary = "Поиск записей (по ФИО, дате посещения)")
-    @GetMapping("/visits/search")
+    @PostMapping("/visits/search")
     public ResponseEntity<List<VisitDto>> searchVisits(@RequestBody @Valid PoolVisitSearchRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(timeTableService.searchVisitsByNameAndDate(request));
     }
@@ -107,6 +111,22 @@ public class TimeTableController {
     public ResponseEntity<ErrorMessage> handlerPoolClosedException(PoolClosedException exception) {
         ErrorMessage message = new ErrorMessage(exception.getMessage(), HttpStatus.CONFLICT);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException exception) {
+        Map<String, String> errors = new HashMap<>();
+
+        exception
+                .getBindingResult()
+                .getAllErrors()
+                .forEach(error -> {
+                    String fieldName = ((FieldError) error).getField();
+                    String errorMessage = error.getDefaultMessage();
+                    errors.put(fieldName, errorMessage);
+                });
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
 

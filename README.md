@@ -218,7 +218,7 @@
 
 ### 🔹 Отмена записи клиента на определенное время
 
-**GET** `/api/v0/pool/timetable/cancel`  
+**POST** `/api/v0/pool/timetable/cancel`  
 Тело запроса:
 
 ```json
@@ -232,7 +232,7 @@
 
 ### 🔹 Поиск записей по ФИО и дате посещения
 
-**GET** `/api/v0/pool/timetable/visits/search`  
+**POST** `/api/v0/pool/timetable/visits/search`  
 Тело запроса:
 
 ```json

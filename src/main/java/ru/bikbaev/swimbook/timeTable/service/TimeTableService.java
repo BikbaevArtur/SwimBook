@@ -19,8 +19,9 @@ public class TimeTableService {
     private final ScheduleService scheduleService;
     private final ClientService clientService;
 
-    //    Макс. кол-во записей в бассейн а 1 временной промежуток
-    //    Мб стоит вывести в бд для гибкости
+    /**
+     * TODO: мб стоит вывести в бд для гибкости
+     */
     private final int MAX_COUNT_RECORD = 10;
 
     public TimeTableService(JpaTimeTable repository,
