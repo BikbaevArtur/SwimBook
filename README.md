@@ -256,3 +256,5 @@
 [ClientController]: src/main/java/ru/bikbaev/swimbook/client/controller/ClientController.java
 [ClientService]: src/main/java/ru/bikbaev/swimbook/client/service/ClientService.java
 [ClientServiceTest]: src/test/java/ru/bikbaev/swimbook/client/service/ClientServiceTest.java
+
+[01_schema.sql]: db/01_schema.sql
