@@ -95,7 +95,7 @@ public class TimeTableService {
      * @param reserveRequest id клиента и дата/время записи
      * @return UUID созданной записи
      */
-    public UUID createNewReserve(ReserveRequest reserveRequest) {
+    public OrderIdResponse createNewReserve(ReserveRequest reserveRequest) {
 
         LocalDate date = reserveRequest.getDatetime().toLocalDate();
         LocalTime time = reserveRequest.getDatetime().toLocalTime();
@@ -110,14 +110,15 @@ public class TimeTableService {
 
         Client client = clientService.getClientEntityById(reserveRequest.getClientId());
 
-
-        return repository.save(TimeTable
+        TimeTable result = repository.save(
+                TimeTable
                         .builder()
                         .client(client)
                         .date(date)
                         .time(time)
-                        .build())
-                .getOrderId();
+                        .build());
+
+        return new OrderIdResponse(result.getOrderId().toString());
     }
 
 
@@ -135,7 +136,7 @@ public class TimeTableService {
      *                durationHours - длительность в часах
      * @return список {@link UUID} — id записей
      */
-    public List<UUID> reserveMultipleHours(MultiHourReservationRequest request) {
+    public List<OrderIdResponse> reserveMultipleHours(MultiHourReservationRequest request) {
         LocalDate date = request.getDate();
         LocalTime startTime = request.getStartTime();
         LocalTime endTime = startTime.plusHours(request.getDurationHours());
@@ -157,7 +158,10 @@ public class TimeTableService {
             );
         }
 
-        return repository.saveAll(timeTables).stream().map(TimeTable::getOrderId).toList();
+        return repository.saveAll(timeTables)
+                .stream()
+                .map(e->new OrderIdResponse(e.getOrderId().toString()))
+                .toList();
     }
 
 

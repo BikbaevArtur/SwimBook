@@ -2,6 +2,7 @@ package ru.bikbaev.swimbook.client.service;
 
 import org.springframework.stereotype.Service;
 import ru.bikbaev.swimbook.client.dto.ClientDto;
+import ru.bikbaev.swimbook.client.dto.ClientIdAndNameResponse;
 import ru.bikbaev.swimbook.client.dto.ClientRequest;
 import ru.bikbaev.swimbook.client.exception.ClientAlreadyExistException;
 import ru.bikbaev.swimbook.client.exception.ClientNotFoundException;
@@ -27,9 +28,11 @@ public class ClientService {
      *  Получение всех клиентов
      * @return возвращаем в виде List список всех клиентов, сконвертированных в Dto
      */
-    public List<ClientDto> getAllClient() {
-        return clientMapper
-                .convertClientListToDto(clientRepository.findAll());
+    public List<ClientIdAndNameResponse> getAllClient() {
+        return clientRepository.findAll()
+                .stream()
+                .map(e->new ClientIdAndNameResponse(e.getId(), e.getName()))
+                .toList();
     }
 
     /**
@@ -93,6 +96,11 @@ public class ClientService {
     }
 
 
+    /**
+     * Поиск клиента по имени
+     * @param name имя клиента
+     * @return возвращяет entity клиента
+     */
     public Client findByName(String name) {
         return  clientRepository.findByName(name).orElseThrow(
                 ()-> new ClientNotFoundException("Клиент с именем: "+name+" не найден")

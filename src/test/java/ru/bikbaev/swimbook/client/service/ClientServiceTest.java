@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.bikbaev.swimbook.client.dto.ClientDto;
+import ru.bikbaev.swimbook.client.dto.ClientIdAndNameResponse;
 import ru.bikbaev.swimbook.client.dto.ClientRequest;
 import ru.bikbaev.swimbook.client.exception.ClientAlreadyExistException;
 import ru.bikbaev.swimbook.client.exception.ClientNotFoundException;
@@ -36,19 +37,20 @@ public class ClientServiceTest {
         Client client2 = Client.builder().id(2L).name("Timur").phone("+79371111111").email("oleg@mail.ru").build();
         List<Client> clients = List.of(client1, client2);
 
-        ClientDto dto1 = ClientDto.builder().id(1L).name("Ivan").phone("+79871234567").email("ivan@mail.ru").build();
-        ClientDto dto2 = ClientDto.builder().id(2L).name("Timur").phone("+79371111111").email("oleg@mail.ru").build();
-        List<ClientDto> dtos = List.of(dto1, dto2);
+        List<ClientIdAndNameResponse> clientIdAndNameResponses = List.of(
+                new ClientIdAndNameResponse(1L, "Ivan"),
+                new ClientIdAndNameResponse(1L, "Timur")
+        );
 
         when(jpa.findAll()).thenReturn(clients);
-        when(mapper.convertClientListToDto(clients)).thenReturn(dtos);
 
-        List<ClientDto> result = service.getAllClient();
+        List<ClientIdAndNameResponse> result = service.getAllClient();
 
         assertNotNull(result);
+        assertEquals(result.size(),clientIdAndNameResponses.size());
+        assertEquals(result.getFirst().getName(),clientIdAndNameResponses.getFirst().getName());
 
         verify(jpa, times(1)).findAll();
-        verify(mapper, times(1)).convertClientListToDto(clients);
     }
 
 
@@ -207,7 +209,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    void getClientEntityByIdTest(){
+    void getClientEntityByIdTest() {
         Long id = 1L;
         Client client = createTestClient();
 
@@ -217,19 +219,19 @@ public class ClientServiceTest {
 
         assertNotNull(result);
 
-        verify(jpa,times(1)).findById(id);
+        verify(jpa, times(1)).findById(id);
     }
 
     @Test
-    void getClientEntityByIdThrowClientNotFoundException(){
+    void getClientEntityByIdThrowClientNotFoundException() {
         Long id = 1L;
         when(jpa.findById(id)).thenReturn(Optional.empty());
-        assertThrows(ClientNotFoundException.class,()->service.getClientEntityById(id));
-        verify(jpa,times(1)).findById(id);
+        assertThrows(ClientNotFoundException.class, () -> service.getClientEntityById(id));
+        verify(jpa, times(1)).findById(id);
     }
 
     @Test
-    void findByNameTest(){
+    void findByNameTest() {
         String name = "Ivan";
         Client client = createTestClient();
         when(jpa.findByName(name)).thenReturn(Optional.of(client));
@@ -237,20 +239,20 @@ public class ClientServiceTest {
         Client result = service.findByName(name);
 
         assertNotNull(result);
-        assertEquals(result,client);
+        assertEquals(result, client);
 
-        verify(jpa,times(1)).findByName(name);
+        verify(jpa, times(1)).findByName(name);
     }
 
     @Test
-    void findByNameTestThrowClientNotFoundException(){
+    void findByNameTestThrowClientNotFoundException() {
         String name = "Ivan";
 
         when(jpa.findByName(name)).thenReturn(Optional.empty());
 
-        assertThrows(ClientNotFoundException.class,()->service.findByName(name));
+        assertThrows(ClientNotFoundException.class, () -> service.findByName(name));
 
-        verify(jpa,times(1)).findByName(name);
+        verify(jpa, times(1)).findByName(name);
     }
 
     private Client createTestClient() {

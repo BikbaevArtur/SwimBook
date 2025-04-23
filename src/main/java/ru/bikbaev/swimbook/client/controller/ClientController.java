@@ -9,6 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.bikbaev.swimbook.client.dto.ClientDto;
+import ru.bikbaev.swimbook.client.dto.ClientIdAndNameResponse;
 import ru.bikbaev.swimbook.client.dto.ClientRequest;
 import ru.bikbaev.swimbook.client.exception.ClientAlreadyExistException;
 import ru.bikbaev.swimbook.client.exception.ClientNotFoundException;
@@ -34,30 +35,28 @@ public class ClientController {
 
     @Operation(summary = "Получение списка клиентов бассейна")
     @GetMapping("/all")
-    public ResponseEntity<List<ClientDto>> getClients() {
-        List<ClientDto> clients = clientService.getAllClient();
-        return ResponseEntity.ok(clients);
+    public ResponseEntity<List<ClientIdAndNameResponse>> getClients() {
+        return ResponseEntity.status(HttpStatus.OK).body(clientService.getAllClient());
     }
 
     @Operation(summary = "Получение данных о клиенте ")
     @GetMapping("/get")
     public ResponseEntity<ClientDto> getClient(@RequestParam Long id) {
-        ClientDto client = clientService.getClientById(id);
-        return ResponseEntity.ok(client);
+        return ResponseEntity.status(HttpStatus.OK).body(clientService.getClientById(id));
     }
 
     @Operation(summary = "Добавление нового клиента")
     @PostMapping("/add")
     public ResponseEntity<Void> addClient(@RequestBody @Valid ClientRequest clientRequest) {
         clientService.createNewClient(clientRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(summary = "Обновление данных о клиенте")
     @PostMapping("/update")
     public ResponseEntity<Void> updateClient(@RequestBody @Valid ClientDto clientDto) {
         clientService.updateClient(clientDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 

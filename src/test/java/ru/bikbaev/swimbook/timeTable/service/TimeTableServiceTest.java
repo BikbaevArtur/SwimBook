@@ -173,10 +173,10 @@ public class TimeTableServiceTest {
                 }
         );
 
-        UUID result = service.createNewReserve(reserveRequest);
+        OrderIdResponse result = service.createNewReserve(reserveRequest);
 
         assertNotNull(result);
-        assertEquals(result, uuid);
+        assertEquals(result.getOrderId(), uuid.toString());
 
         verify(repository, times(1)).findByDateOrderByTime(date);
         verify(scheduleService,times(1)).validatePoolWorkingHours(date,time);
@@ -307,7 +307,7 @@ public class TimeTableServiceTest {
 
         when(repository.saveAll(any())).thenReturn(timeTables);
 
-        List<UUID> result = service.reserveMultipleHours(request);
+        List<OrderIdResponse> result = service.reserveMultipleHours(request);
 
         assertNotNull(result);
 
