@@ -29,6 +29,16 @@
 | API для работы с клиентами |     ✅      |  [ClientController]   | [ClientService]    | [ClientServiceTest]    |
 | API для работы с записями  |     ✅      | [TimeTableController] | [TimeTableService] | [TimeTableServiceTest] |
 
+# Слой бизнес логики
+
+|         Service          |             Test             | Описание                               |
+|:------------------------:|:----------------------------:|----------------------------------------|
+|     [ClientService]      |     [ClientServiceTest]      | управление клиентскими данными         |
+|    [TimeTableService]    |    [TimeTableServiceTest]    | управление данными бронирования        |
+|    [ScheduleService]     |    [ScheduleServiceTest]     | составление графика работы             |
+|  [WorkScheduleService]   |  [WorkScheduleServiceTest]   | управление данными по рабочим дням     |
+| [HolidayScheduleService] | [HolidayScheduleServiceTest] | управление данными по праздничным дням |
+
 ---
 
 # API для работы с клиентами
@@ -257,6 +267,10 @@
 [HolidayScheduleService]: src/main/java/ru/bikbaev/swimbook/schedule/service/HolidayScheduleService.java
 
 [HolidayScheduleServiceTest]: src/test/java/ru/bikbaev/swimbook/schedule/service/HolidayScheduleServiceTest.java
+
+[WorkScheduleService]: src/main/java/ru/bikbaev/swimbook/schedule/service/WorkScheduleService.java
+
+[WorkScheduleServiceTest]: src/test/java/ru/bikbaev/swimbook/schedule/service/WorkScheduleServiceTest.java
 
 [ClientController]: src/main/java/ru/bikbaev/swimbook/client/controller/ClientController.java
 
